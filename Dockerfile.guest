@@ -7,7 +7,7 @@
 #   kernel  — current Fedora kernel + minimalization patch. Always re-runs.
 #   build   — rpmbuild + collect. Always re-runs (the ~1-2 h part).
 
-FROM quay.io/fedora/fedora:44 AS builder
+FROM quay.io/fedora/fedora:45 AS builder
 ARG BUILD_DEPS=""
 RUN set -eux \
  && echo "builder refresh: ${BUILD_DEPS}" \

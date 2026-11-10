@@ -1,6 +1,6 @@
 # xen-guest-kernel
 
-Minimal **PV/PVH Xen guest** kernel for Fedora 44, stripped down from the
+Minimal **PV/PVH Xen guest** kernel for Fedora 45, stripped down from the
 stock Fedora kernel for use in lightweight VMs. No QEMU, no libvirt, no
 virtio — pure PV/PVH with Xen paravirtualized drivers (xen-blkfront,
 xen-netfront).
@@ -28,7 +28,7 @@ needs a fraction of that. This repo builds a minimal kernel with:
 Three-stage `Dockerfile.guest`:
 
 1. **builder** — rpmbuild toolchain + kernel build deps (layer-cached)
-2. **kernel** — resolves current Fedora 44 kernel, applies `scripts/minimalize-config.sh` to strip unused subsystems, builds with `ISA_LEVEL=4`
+2. **kernel** — resolves current Fedora 45 kernel, applies `scripts/minimalize-config.sh` to strip unused subsystems, builds with `ISA_LEVEL=4`
 3. **build** — `rpmbuild`, collects RPMs into `/out`
 
 `build-guest.yml` runs the build and publishes as `kernel-xenguest-<VER>`.
@@ -64,7 +64,7 @@ podman build -t xen-guest-kernel:local -f Dockerfile.guest .
 CONTAINER=$(podman create xen-guest-kernel:local)
 podman cp "$CONTAINER":/out/. /tmp/rpms/
 podman rm "$CONTAINER"
-# Generate initramfs (in Fedora 44 container)
+# Generate initramfs (in Fedora 45 container)
 dnf install dracut ostree
 rpm -i /tmp/rpms/kernel-core-*.rpm /tmp/rpms/kernel-modules-*.rpm /tmp/rpms/kernel-modules-core-*.rpm
 dracut -f --add ostree /out/initramfs-xenguest "$(ls /lib/modules/)"
