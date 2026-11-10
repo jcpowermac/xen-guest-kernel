@@ -54,6 +54,10 @@ RUN set -eux \
 
  && sed -i "s/-w -n -c/-w -n -i/g" kernel.spec \
  && sed -i 's|%pesign -s -i \$SignImage -o vmlinuz.signed.*|cp \$SignImage vmlinuz.signed|' kernel.spec \
+ # F45 spec unconditionally hmac-signs vmlinuz with sha512hmac (libkcapi/AF_ALG);
+ # GH-hosted runners (azure kernel) lack algif_hmac and our guest kernel is
+ # unsigned, consumed only by our own image builds - no-op the FIPS step.
+ && sed -i 's/&& sha512hmac /\&\& true /; s/^\s*sha512hmac /\ttrue /' kernel.spec \
  && echo "=== Config validation will print errors but not fail (-i flag) ===" \
  && grep -n "OPTS=" kernel.spec | head -3
 
