@@ -32,6 +32,14 @@ jobs:
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /usr/local/share/NuGet /opt/powershell
           sudo apt-get -y clean
           df -h /
+      # The F45 kernel spec signs vmlinuz with sha512hmac (libkcapi), which
+      # needs the host kernel's AF_ALG hmac(sha512) inside the build container.
+      # GH-hosted runner kernels don't have the module loaded.
+      - name: Load AF_ALG hmac modules for sha512hmac
+        if: runner.environment == 'github'
+        run: |
+          sudo modprobe af_alg
+          sudo modprobe algif_hmac
       - uses: docker/setup-buildx-action@v3
         if: runner.environment == 'github'
       - id: image
