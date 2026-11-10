@@ -27,7 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Free disk space
-        if: runner.environment == 'github'
+        if: github.runner_environment == 'github'
         run: |
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /usr/local/share/NuGet /opt/powershell
           sudo apt-get -y clean
@@ -36,7 +36,7 @@ jobs:
       # needs the host kernel's AF_ALG hmac(sha512) inside the build container.
       # GH-hosted runner kernels don't have the module loaded.
       - name: Load AF_ALG hmac modules for sha512hmac
-        if: runner.environment == 'github'
+        if: github.runner_environment == 'github'
         run: |
           sudo modprobe af_alg
           sudo modprobe algif_hmac
