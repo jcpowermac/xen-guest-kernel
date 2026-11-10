@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Free disk space
         run: |
-          if [ "${RUNNER_ENVIRONMENT:-}" = "github" ]; then
+          if [ "${RUNNER_ENVIRONMENT:-}" = "github-hosted" ]; then
             sudo rm -rf /usr/share/dotnet /usr/local/lib/android /usr/local/share/NuGet /opt/powershell
             sudo apt-get -y clean
             df -h /
@@ -39,7 +39,7 @@ jobs:
       - name: Load AF_ALG hmac modules for sha512hmac
         run: |
           echo "RUNNER_ENVIRONMENT=${RUNNER_ENVIRONMENT:-unset}"
-          if [ "${RUNNER_ENVIRONMENT:-}" = "github" ]; then
+          if [ "${RUNNER_ENVIRONMENT:-}" = "github-hosted" ]; then
             sudo modprobe af_alg
             sudo modprobe algif_hmac
             sudo lsmod | grep -E "af_alg|algif"
